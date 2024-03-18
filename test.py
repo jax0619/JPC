@@ -5,7 +5,7 @@ import os
 import tqdm
 import numpy as np
 import torch.nn.functional as F
-from models.counter import NLT_Counter
+from models.counter import Counter
 from models.csrnet import CSRNet
 from misc.utils import *
 from tensorboardX import SummaryWriter
@@ -31,13 +31,10 @@ class DATrainer(object):
         # Set cfg to be shareable in the class
         self.cfg_data = cfg_data
         self.pwd = pwd
-        # self.exp_path = cfg.EXP_PATH
-        # self.exp_name = cfg.EXP_NAME
-        # self.exp_path = osp.join(self.exp_path, 'da')
         self.real_test_loader = loading_data(
             cfg)
 
-        self.model = CSRNet() if cfg.csrnet else NLT_Counter()
+        self.model = CSRNet() if cfg.csrnet else Counter()
         self.model.to(device='cuda')
         self.pretrained_dict = torch.load(cfg.init_weights)  # ['params']
         self.model.load_state_dict(self.pretrained_dict)
