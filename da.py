@@ -37,7 +37,7 @@ class DATrainer(object):
         self.val_loader=None
         if cfg.split:
             ds.generate_split()
-        # self.GCC_train_loader, self.real_train_loader,self.val_loader,self.real_test_loader,self.restore_transform = loading_data(cfg)
+        
         self.GCC_train_loader, self.real_train_loader, self.real_test_loader = loading_data(cfg)
         self.student=CSRNet() if cfg.csrnet else Counter()
         self.teacher=CSRNet() if cfg.csrnet else Counter()
@@ -174,9 +174,6 @@ class DATrainer(object):
             for n, batch in enumerate(train_bar, 1):
                 count+=1
                 global_count = global_count + 1
-                #GCC合成数据
-                #real真实数据
-                #batch0,1,2分别是原图、标签、加噪图
 
                 GCC_img   = batch[1][0].cuda()
                 GCC_label = batch[1][2].cuda()
@@ -186,10 +183,7 @@ class DATrainer(object):
                 real_label = batch[0][2].cuda()
                 real_ns_img = batch[0][1].cuda()
                 ns=batch[0][3]
-                # noise=[ns[0][j].item()+ns[1][j].item() for j in range(len(ns[0]))]
                 noise=ns[0].sum().item()+ns[1].sum().item()
-                #real_ns_img,real_label,t=self.op_hp(real_ns_img,real_label)
-                #real_ns_img = real_ns_img + torch.randn(real_ns_img.size()).cuda() * 0.1
                 if noise<=cfg.GCC_batch_size:
                     if random.random() < 0.6:
                         size_scale=cfg.size_scale
@@ -201,8 +195,6 @@ class DATrainer(object):
                 else:
                     #ratio = random.randrange(500, 2000) / 1000.0
                     ratio = random.randrange(717, 1414) / 1000.0
-                #if mall (500,2000)
-                #ratio = random.randrange(850, 1150) / 1000.0
                 new_size = int(cfg_data.TRAIN_SIZE[0] * ratio / 8) * 8
                 if cfg.target_dataset =='SHHA' or cfg.target_dataset=='QNRF':
                     randommax = torch.zeros((cfg.real_batch_size, 2), dtype=int)
@@ -281,9 +273,6 @@ class DATrainer(object):
                     else:
                         pred_th=pred_th[:,:,x1:x1+cfg_data.TRAIN_SIZE[0],y1:y1+cfg_data.TRAIN_SIZE[1]]
                     if cfg.vis:vis_img(pred_th.detach().squeeze(1), 'cropped_th_pred',count,True)
-                #vis_img(real_pred["th_pred"].squeeze(), 'cropped_th_pred')
-                # GCC_losses,GCC_pred = self.model(GCC_ns_img,y=GCC_label,x2=GCC_img,use_teacher=True,update_teacher=update_teacher)
-                #real_losses, real_pred = self.model(real_ns_img, y=real_label, x2=real_img, use_teacher=True,update_teacher=update_teacher)
 
                 real_stu_loss = F.mse_loss(pred_stu.squeeze(),pred_th.squeeze())
 
@@ -298,15 +287,9 @@ class DATrainer(object):
                 real_label_cnt = cropped_real_label.sum().data / self.cfg_data.LOG_PARA
                 real_stu_pred_cnt = pred_stu.sum().data / self.cfg_data.LOG_PARA
                 real_th_pred_cnt = pred_th.sum().data / self.cfg_data.LOG_PARA
-
-                # GCC_stu_mae = torch.abs(GCC_label_cnt-GCC_stu_pred_cnt).item()
-                # GCC_stu_mse = (GCC_label_cnt - GCC_stu_pred_cnt).pow(2).item()
-
+                
                 real_stu_mae = torch.abs(real_label_cnt - real_stu_pred_cnt).item()
                 real_stu_mse = (real_label_cnt - real_stu_pred_cnt).pow(2).item()
-
-                # GCC_th_mae = torch.abs(GCC_label_cnt - GCC_stu_pred_cnt).item()
-                # GCC_th_mse = (GCC_label_cnt - GCC_stu_pred_cnt).pow(2).item()
 
                 real_th_mae = torch.abs(real_label_cnt - real_th_pred_cnt).item()
                 real_th_mse = (real_label_cnt - real_th_pred_cnt).pow(2).item()
@@ -413,9 +396,6 @@ class DATrainer(object):
                 # Print loss and maeuracy for this epoch
                 print('Epoch {}, test, Loss={:.4f} mae={:.4f}  mse={:.4f}   stu={}'.format(epoch, best_loss, best_mae,
                                                                                   best_mse,stu))
-
-                # self.record['val_loss'].append(val_loss_avg)
-                # self.record['val_mae'].append(val_mae_avg)
 
                 self.record['test_loss'].append(best_loss)
                 self.record['test_mae'].append(best_mae)
