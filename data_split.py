@@ -2,8 +2,6 @@ import os
 import random
 from config import cfg
 
-# 如何写一个属于自己的数据集，读取大数据集 或者你自己的数据集
-# 就需要生成一个text文件 train val .text
 class data_split():
     def __init__(self):
         self.source_path='/home/xcj/code/cc/NLT-master/data_split/'
@@ -12,7 +10,7 @@ class data_split():
         self.ratio=cfg.ratio
         self.files_path='/home/xcj/code/cc/ProcessedData/'+self.dataset+'/train/img'
         assert os.path.exists(self.files_path), "path: '{}' does not exist.".format(self.files_path)
-        self.val=cfg.val
+        self.val=0
         self.train_savepath=self.source_path+self.dataset+'_scenes/'+self.mode+'/'+self.mode+'.txt'
         self.val_savepath=self.source_path+self.dataset+'_scenes/val/val.txt'
         if os.path.exists(self.train_savepath):
