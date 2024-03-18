@@ -1,10 +1,7 @@
-# NLT - Cross-domain Crowd Counting
+# JPC - Cross-domain Adaptive Crowd Counting
 
 ---
-This repo is the official implementation of [paper](https://ieeexplore.ieee.org/abstract/document/9337191/): **Neuron Linear Transformation: Modeling the
-Domain Shift for Crowd Counting (T-NNLS, 2021)**. The code is developed based on [C3F](https://github.com/gjy3035/C-3-Framework).
-
-![framework](./figure/framework.png)
+This repo is the implementation of [paper]: **undetermined**. The code is developed based on [NLT](https://github.com/taohan10200/NLT).
 
 #### Summary
 
@@ -14,7 +11,6 @@ Domain Shift for Crowd Counting (T-NNLS, 2021)**. The code is developed based on
 * [Test](#test)
 # Getting Started
 
-
 ## Installation
 It is recommended to prepare the following dependencies before training.
 
@@ -23,7 +19,7 @@ It is recommended to prepare the following dependencies before training.
     - Pytorch >=1.5: http://pytorch.org .
     - other libs in ```requirements.txt```, run ```pip install -r requirements.txt```.
 -  Code
-    - Clone this repository in the directory (```Root/NLT```):
+    - Clone this repository in the directory (```Root/JPC```):
         ```bash
         git clone https://github.com/taohan10200/NLT.git
         ```
@@ -32,10 +28,8 @@ It is recommended to prepare the following dependencies before training.
     - other target datasets: 
     ShanghaiTech Part [[Link1](https://www.dropbox.com/s/fipgjqxl7uj8hd5/ShanghaiTech.zip?dl=0)] [[Link2](https://pan.baidu.com/s/1nuAYslz)]);
     UCF-QNRF [[Homepage](https://www.crcv.ucf.edu/data/ucf-qnrf/)] [[Download](https://drive.google.com/open?id=1fLZdOsOXlv2muNB_bXEW6t-IS9MRziL6)];
-    UCSD [[Homepage](http://www.svcl.ucsd.edu/projects/peoplecnt/)];
     MALL [[Homepage](http://personal.ie.cuhk.edu.hk/~ccloy/downloads_mall_dataset.html)];
-    WorldExpo'10 [[Homepage](http://www.ee.cuhk.edu.hk/~xgwang/expo.html)].
-    - Generate the density map with the scripts in `Root/NLT/data_split/generate_den_map` 
+    - Generate the density map with the scripts in `Root/JPC/data_split/generate_den_map` 
 
 ## Project Architecture
 
