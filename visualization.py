@@ -10,7 +10,7 @@ from misc.utils import *
 import scipy.io as sio
 from PIL import Image, ImageOps
 from misc.quality import get_psnr,get_ssim
-from models.counter import NLT_Counter
+from models.counter import Counter
 from config import cfg
 import tqdm
 
@@ -33,7 +33,7 @@ class den_test:
         self.cfg_data = cfg_data
         self.img_transform = img_transform
         self.tarRoot = tarRoot
-        self.net =NLT_Counter()
+        self.net =Counter()
         self.net.load_state_dict(torch.load(model_path))
         self.net = torch.nn.DataParallel(self.net).cuda()
         self.net.eval()
@@ -155,9 +155,6 @@ def get_pts(data):
                 pts.append(loc) 
     return pts               
 
-
-# label_path = '../ProcessedData/performed_bak_lite/scene_09_2/csv_den_maps_k15_s4_544_960/1531113494.csv'
-label_path = '../ProcessedData/SHHB/train/den_10.28/99.csv'
 def generater_hotmap(label_path):
     den = pd.read_csv(label_path, sep=',', header=None).values
     den = den.astype(np.float32, copy=False)
@@ -193,36 +190,28 @@ if __name__ == '__main__':
     if dataset=='GCC2SHHA':
         tarRoot = cfg_data.SHHA_DATA_PATH
         tar_test_list = os.path.join( cfg_data.SHHA_scene_dir+'/test', 'test.txt')
-        cc_path = './exp/SHHA/da/best_few_shot/mae_86.7_mse_132.4/all_ep_261_mae_86.7_mse_132.4_th.pth' if da else \
-            './exp/pre/04-27_23-16_SHHB_vgg16__lr1e-05_pre_train/all_ep_50_mae_27.3_mse_68.5.pth'
+        cc_path = './' if da else \
+            './'
         max=43 if da else 188
     if dataset=='GCC2SHHB':
         tarRoot = cfg_data.SHHB_DATA_PATH
         tar_test_list = os.path.join(cfg_data.SHHB_scene_dir+'/test', 'test.txt')
-        cc_path = './exp/SHHB/da/best_few_shot/mae_10.5_mse_15.6/all_ep_49_mae_10.5_mse_15.6_stu.pth' if da else\
-            './exp/pre/04-27_23-16_SHHB_vgg16__lr1e-05_pre_train/all_ep_50_mae_27.3_mse_68.5.pth'
+        cc_path = './' if da else\
+            './'
         max = 5 if da else 32
     if dataset=='GCC2QNRF':
         tarRoot = cfg_data.QNRF_DATA_PATH
         tar_test_list = os.path.join(cfg_data.QNRF_scene_dir+'/test', 'test.txt')
-        cc_path = './exp/QNRF/da/best_few_shot/06-29_20-49_QNRF_vgg16__lr1e-05_train_train_few_shot/all_ep_199_mae_149.6_mse_249.9_th.pth' if da  else \
-            './exp/pre/04-27_23-16_SHHB_vgg16__lr1e-05_pre_train/all_ep_50_mae_27.3_mse_68.5.pth'
+        cc_path = './' if da  else \
+            './'
         max = 75 if da else 276
 
     if dataset=='GCC2MALL':
         tarRoot = cfg_data.MALL_DATA_PATH
         tar_test_list = os.path.join(cfg_data.MALL_scene_dir+'/test', 'test.txt')
-        cc_path = './exp/MALL/da/best_few_shot/mae 1.96 mse 2.53 08-30_11-08_MALL_vgg16__lr1e-05_train_train_few_shot/all_ep_99_mae_2.0_mse_2.5_stu.pth' if da else \
-            './exp/pre/04-27_23-16_SHHB_vgg16__lr1e-05_pre_train/all_ep_50_mae_27.3_mse_68.5.pth'
+        cc_path = './' if da else \
+            './'
         max = 1 if da else 6.2
-    if dataset == 'GCC2WE':
-        tarRoot = cfg_data.WE_DATA_PATH
-        tar_test_list = os.path.join(cfg_data.WE_scene_dir + '/test', '200608.txt')
-        cc_path = './exp/WE/03-01_01-55_WE_vgg16__lr1e-05_gamma0.98_IFS/all_ep_296_mae_4.4_mse_0.0.pth'
-    if dataset=='GCC2UCSD':
-        tarRoot = cfg_data.UCSD_DATA_PATH
-        tar_test_list = os.path.join(cfg_data.UCSD_scene_dir+'/test', 'test.txt')
-        cc_path = './exp/UCSD/02-29_00-42_UCSD_vgg16__lr1e-05_gamma0.98_NLT/all_ep_56_mae_1.5_mse_2.0.pth'
 
     den_test = den_test(cc_path,tar_test_list,tarRoot,cfg_data,img_transform)
     den_test.forward()
