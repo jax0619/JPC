@@ -32,7 +32,7 @@ class PreTrainer(object):
         self.train_loader, self.val_loader = loading_data(cfg)
 
         # self.model = NLT_Counter(mix=cfg.mixstyle)
-        self.model=CSRNet() if cfg.csrnet else NLT_Counter()
+        self.model=CSRNet() if cfg.csrnet else Counter()
 
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=cfg.pre_lr, weight_decay=cfg.pre_weight_decay)
 
@@ -83,13 +83,11 @@ class PreTrainer(object):
 
                 img = batch[0].cuda()
                 label = batch[1].cuda()
-                # vis_img(img, 'img')
-                # vis_img(label, 'label')
+
                 pred = self.model(img)
 
                 loss = F.mse_loss(pred.squeeze(), label)
 
-                # Print loss and maeuracy for this step
                 label_cnt = label.sum().data / self.cfg_data.LOG_PARA
                 pred_cnt = pred.sum().data / self.cfg_data.LOG_PARA
                 mae = torch.abs(label_cnt - pred_cnt).item()
