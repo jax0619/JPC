@@ -17,7 +17,7 @@ __C.gpu_id = "0"
 __C.target_dataset = 'SHHA'#'QNRF' dataset choices =  ['SHHB', 'QNRF', 'MALL', 'SHHA']
 __C.train_mode = 'train_few_shot'
 
-__C.csrnet = True  # use CSRnet model
+__C.csrnet = False  # use CSRnet model
 __C.pre =  False  #Image Net pre-trained weight
 
 #data_split
@@ -27,7 +27,7 @@ __C.val=0.
 
 __C.vis = False  # visualize data
 
-__C.init_weights ='./exp/all_ep_42_mae_17.9_mse_45.2stu.pth'#pre-trained weight
+__C.init_weights ='./'#pre-trained weight
 __C.test_weight = './'#adapted weight
 
 #perturbation
