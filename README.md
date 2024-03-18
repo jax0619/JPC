@@ -21,7 +21,7 @@ It is recommended to prepare the following dependencies before training.
 -  Code
     - Clone this repository in the directory (```Root/JPC```):
         ```bash
-        git clone https://github.com/taohan10200/NLT.git
+        git clone https://github.com/jax0619/JPC.git
         ```
 - Dataset downloading
     - the source dataset: GCC [[Link1](https://mailnwpueducn-my.sharepoint.com/:f:/g/personal/gjy3035_mail_nwpu_edu_cn/Eo4L82dALJFDvUdy8rBm6B0BuQk6n5akJaN1WUF1BAeKUA?e=ge2cRg)] [[Link2](https://v2.fangcloud.com/share/4625d2bfa9427708060b5a5981)] [[Link3](https://pan.baidu.com/s/1OtKqmw84TFbxAiN0H2xBtQ) (pwd:**utdo**)] 
@@ -52,7 +52,7 @@ It is recommended to prepare the following dependencies before training.
     	    |    |-- img
     	    |    |-- den
     	|-- ...		
-	-- NLT
+	-- JPC
 	  |-- data_split
 	  |-- dataloader
 	  |-- models
@@ -61,32 +61,26 @@ It is recommended to prepare the following dependencies before training.
 
 ## Training
 
-### Train ours NLT
+### Train ours JPC
 
 Modify the flowing configurations in `config.py`:
  ```bash
-__C.model_type = 'vgg16'   # choices=['ResNet50','vgg16']
-__C.phase ='pre_train'     # choices=['pre_train', 'DA_train', 'fine_tune'])
-__C.gpu_id = "2,3"         # single gpu:"0"..; multi gpus:"2,3,
-__C.target_dataset ='SHHB' # dataset choices =  ['SHHB',  'UCF50',  'QNRF', 'MALL', 'UCSD', 'SHHA']
+__C.model_type = 'vgg16'
+__C.phase = 'train'  # choices=['train','test','pre_train','SE_pre_train','cross_train']
+__C.target_dataset = 'SHHA'# dataset choices =  ['SHHB', 'QNRF', 'MALL', 'SHHA']
+__C.init_weights ='./' #path of pre-trained weights
 
 ```
 Then, run the command:
 ```bash
-python nlt_train.py
+python da.py
 ```
 
-### Pre_train on GCC dataset and then fine tune on others datasets
+### Pre_train on GCC dataset
 
 
 #### pre_train 
  modify the `__C.phase='pre_train'` in `config.py`, and then run: 
-```bash
-python pre_train.py
-```
-#### fine tune 
-Find the pre-trained model in `Root/NLT/exp/pre`. Set the configurations `__C.GCC_pre_train_model`  
- and  `__C.phase='fine_tune'` in `config.py`, and then run: 
 ```bash
 python pre_train.py
 ```
@@ -99,16 +93,5 @@ python pre_train.py
 python test.py
 ```
 
-The visual density map can be selectively generated in `Root/NLT/visual-display`.
+The visual density map can be selectively generated in `Root/JPC/visual-display` by visualization.py.
 
-# Citation
-If you find this project is useful for your research, please cite:
-```
-@article{wang2021neuron,
-  title={Neuron linear transformation: modeling the domain shift for crowd counting},
-  author={Wang, Qi and Han, Tao and Gao, Junyu and Yuan, Yuan},
-  journal={IEEE Transactions on Neural Networks and Learning Systems},
-  year={2021},
-  publisher={IEEE}
-}
-```
