@@ -12,16 +12,16 @@ __C.seed = 2453  # 2453  #3035 random seed, for reproduction
 # ---------------the parameters of training----------------
 __C.sou_dataset = 'GCC'
 __C.model_type = 'vgg16'
-__C.phase = 'train'  # choices=['train','test','pre_train','SE_pre_train','cross_train'])
-__C.gpu_id = "0"  # single gpu:"0"..; multi gpus:"2,3, 虽然没有两个gpu，但是如果只有一个的话，训练会停滞
-__C.target_dataset = 'SHHA'#'QNRF' dataset choices =  ['SHHB',  'UCF50',  'QNRF', 'MALL', 'UCSD', 'SHHA']
-__C.train_mode = 'train_few_shot'# choices=['train_all','train_few_shot'])
+__C.phase = 'train'  # choices=['train','test','pre_train','cross_train'])
+__C.gpu_id = "0"  
+__C.target_dataset = 'SHHA'#'QNRF' dataset choices =  ['SHHB', 'QNRF', 'MALL', 'SHHA']
+__C.train_mode = 'train_few_shot'
 
 __C.csrnet = True  # use CSRnet model
 __C.pre =  False  #Image Net pre-trained weight
 
 #data_split
-__C.ratio=1 if __C.train_mode=='train_few_shot' else 1.
+__C.ratio=0.1 if __C.train_mode=='train_few_shot' else 1.
 __C.split=False
 __C.val=0.
 
