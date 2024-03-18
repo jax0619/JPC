@@ -59,6 +59,15 @@ It is recommended to prepare the following dependencies before training.
 	  |-- ...
  ```
 
+### Pre_train on GCC dataset
+
+
+#### pre_train 
+ modify the `__C.phase='pre_train'` in `config.py`, and then run: 
+```bash
+python pre_train.py
+```
+
 ## Training
 
 ### Train ours JPC
@@ -76,16 +85,6 @@ Then, run the command:
 python da.py
 ```
 
-### Pre_train on GCC dataset
-
-
-#### pre_train 
- modify the `__C.phase='pre_train'` in `config.py`, and then run: 
-```bash
-python pre_train.py
-```
-
-
 ## Test
  To evaluate the metrics (MAE\MSE\PNSR\SSIM) on test set, you should fill the model path (`cc_path`) and dataset name in `test.py`, and then run:
 
@@ -93,5 +92,5 @@ python pre_train.py
 python test.py
 ```
 
-The visual density map can be selectively generated in `Root/JPC/visual-display` by visualization.py.
+The visual density map can be selectively generated in `Root/JPC/visual-display`.
 
